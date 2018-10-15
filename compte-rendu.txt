@@ -1,0 +1,9 @@
+Routage : Suite à la disparition tragique de VM2, faut-il modifier les informations de routage sur VM1 ? ou sur VM1-6 ? 
+
+A priori, oui. Il faut supprimer les passerelles inutiles
+
+Faire un ping 172.16.2.1. Donner la capture sur tun0 (avec wireshark). Que constatez-vous ? 
+On constate que le trafic des trames est sur le réseau local (Loopback) lorsque l'on ping.
+
+Faire ping 172.16.2.10. Que constatez-vous ?
+On constate que si on ping une adresse qui n'existe pas, le trafic est redirigé vers tun0.
