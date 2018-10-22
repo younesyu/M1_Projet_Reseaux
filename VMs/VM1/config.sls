@@ -37,20 +37,8 @@ routes:
       - name: LAN2
         ipaddr: 172.16.2.160/28
         gateway: 172.16.2.132
-
-## Configuration de la route vers LAN2-6 via VM1-6
-routes:
-  network.routes:
-    - name: eth3
-    - routes:
-      - name: LAN26
-        ipaddr: fc00:1234:2::/64
-        gateway: 172.16.2.56
-
 ## Configuration de la route vers LAN4 via VM2
-routes:
-  network.routes:
-    - name: eth4
+    - name: eth1
     - routes:
       - name: LAN4
         ipaddr: 172.16.2.176/28
