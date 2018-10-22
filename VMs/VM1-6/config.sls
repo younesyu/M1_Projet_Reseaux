@@ -12,7 +12,7 @@ ip route del default:
   cmd:
     - run
 
-##Configuration de VM1
+##Configuration de VM1-6
 eth1:
   network.managed:
     - enabled: True
@@ -24,15 +24,22 @@ eth1:
     - ipv6_autoconf: no
     - ipv6ipaddr: fc00:1234:1::1
     - ipv6netmask: 64
+eth2:
+  network.managed:
+    - enabled: True
+    - type: eth
+    - proto: none
+    - ipaddr: 172.16.2.156
+    - netmask: 28
 
-## Configuration de la route vers LAN2 via VM2
+## Configuration de la route vers LAN2-6 via VM2-6
 routes:
   network.routes:
     - name: eth1
     - routes:
       - name: LAN2-6
         ipaddr: fc00:1234:2::/64
-        gateway: fc00:1234:1::2
+        gateway: fc00:1234:1::26
 
 
 
