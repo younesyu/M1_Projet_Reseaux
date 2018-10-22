@@ -42,4 +42,31 @@ routes:
         gateway: fc00:1234:1::26
 
 
+## Configuration de la route vers LAN1 via VM1
+    - name: eth2
+    - routes:
+      - name: LAN1
+        ipaddr: 172.16.2.128/28
+        gateway: 172.16.2.151
+
+## Configuration de la route vers LAN2 via VM1
+    - name: eth2
+    - routes:
+      - name: LAN2
+        ipaddr: 172.16.2.160/28
+        gateway: 172.16.2.151
+
+## Configuration de la route vers LAN4 via VM1
+    - name: eth2
+    - routes:
+      - name: LAN4
+        ipaddr: 172.16.2.176/28
+        gateway: 172.16.2.151
+
+
+## But enable ipv4 forwarding
+net.ipv4.ip_forward:
+  sysctl:
+    - present
+    - value: 0
 

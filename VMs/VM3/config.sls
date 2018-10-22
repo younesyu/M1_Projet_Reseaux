@@ -38,8 +38,6 @@ routes:
         gateway: 172.16.2.162
 
 ## Configuration de la route vers LAN2-6 via VM3-6
-routes:
-  network.routes:
     - name: eth2
     - routes:
       - name: LAN2-6

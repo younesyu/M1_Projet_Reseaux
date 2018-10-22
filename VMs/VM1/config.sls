@@ -37,12 +37,20 @@ routes:
       - name: LAN2
         ipaddr: 172.16.2.160/28
         gateway: 172.16.2.132
+
 ## Configuration de la route vers LAN4 via VM2
     - name: eth1
     - routes:
       - name: LAN4
         ipaddr: 172.16.2.176/28
         gateway: 172.16.2.132
+
+
+## But enable ipv4 forwarding
+net.ipv4.ip_forward:
+  sysctl:
+    - present
+    - value: 1
 
 
 
