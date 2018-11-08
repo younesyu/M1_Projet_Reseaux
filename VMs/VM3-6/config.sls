@@ -6,14 +6,14 @@ NetworkManager:
   service:
     - dead
     - enable: False
-
+    
 ## Suppression de la passerelle par défaut
 ip route del default:
   cmd:
     - run
 
 ##Configuration de VM3
-eth1: #LAN2-6
+eth1:
   network.managed:
     - enabled: True
     - type: eth
@@ -25,7 +25,7 @@ eth1: #LAN2-6
     - ipv6ipaddr: fc00:1234:2::3
     - ipv6netmask: 64
 
-eth2: #LAN4
+eth2:
   network.managed:
     - enabled: True
     - type: eth
@@ -40,7 +40,7 @@ routes:
     - routes:
       - name: LAN1-6
         ipaddr: fc00:1234:1::/64
-        gateway: fc00:1234:2::26
+        gateway: fc00:1234:2::2
     - name: eth2
     - routes:
       - name: LAN2
@@ -52,3 +52,6 @@ routes:
       - name: LAN3
         ipaddr: 172.16.2.144/28
         gateway: 172.16.2.183
+
+
+

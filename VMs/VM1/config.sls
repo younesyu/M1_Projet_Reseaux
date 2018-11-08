@@ -6,7 +6,7 @@ NetworkManager:
   service:
     - dead
     - enable: False
-
+    
 ## Suppression de la passerelle par défaut
 ip route del default:
   cmd:
@@ -14,7 +14,7 @@ ip route del default:
 
 ##Configuration de VM1
 eth1:
-  network.managed: #LAN1
+  network.managed:
     - enabled: True
     - type: eth
     - proto: none
@@ -22,7 +22,7 @@ eth1:
     - netmask: 28
 
 eth2:
-  network.managed: #LAN3
+  network.managed:
     - enabled: True
     - type: eth
     - proto: none
@@ -46,3 +46,6 @@ net.ipv4.ip_forward:
   sysctl:
     - present
     - value: 1
+
+
+

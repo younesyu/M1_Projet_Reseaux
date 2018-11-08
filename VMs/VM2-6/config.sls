@@ -6,14 +6,14 @@ NetworkManager:
   service:
     - dead
     - enable: False
-
+    
 ## Suppression de la passerelle par défaut
 ip route del default:
   cmd:
     - run
 
 ## Configuration de VM2
-eth1: # LAN1-6
+eth1:
   network.managed:
     - enabled: True
     - type: eth
@@ -22,10 +22,10 @@ eth1: # LAN1-6
     - ipv6proto: static
     - enable_ipv6: true
     - ipv6_autoconf: no
-    - ipv6ipaddr: fc00:1234:1::26
+    - ipv6ipaddr: fc00:1234:1::2
     - ipv6netmask: 64
 
-eth2:  #LAN2-6
+eth2:
   network.managed:
     - enabled: True
     - type: eth
@@ -34,7 +34,7 @@ eth2:  #LAN2-6
     - ipv6proto: static
     - enable_ipv6: true
     - ipv6_autoconf: no
-    - ipv6ipaddr: fc00:1234:2::26
+    - ipv6ipaddr: fc00:1234:2::2
     - ipv6netmask: 64
 
 ## No need to add routes
