@@ -1,16 +1,9 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#include "extremite.h"
 
 /* taille maximale des lignes */
 #define MAXLIGNE 80
 #define CIAO "Au revoir ...\n"
+#define BUFFER_SIZE 1024
 
 int ext-out()
 {
@@ -118,14 +111,15 @@ void echo(int f, char* hote, char* port)
   fprintf(stderr,"[%s:%s](%i): Terminé.\n",hote,port,pid);
 }
 
-int ext-in(char * hote)
+int ext-in(char * hote, int tunfd)
 {
   //TODO
+  /* Trouver l'hôte */
   /*const char * hote = ""; /* nom d'hôte du  serveur */ 
   const char * port = "123"; /* port TCP du serveur */   
   char ip[NI_MAXHOST]; /* adresse IPv4 en notation pointée */
   struct addrinfo *resol; /* struct pour la résolution de nom */
-  int s; /* descripteur de socket */
+  int sock; /* descripteur de socket */
   
   /* Résolution de l'hôte */
   if ( getaddrinfo(hote,port,NULL, &resol) < 0 ) {
@@ -138,7 +132,7 @@ int ext-in(char * hote)
 
   /* Création de la socket, de type TCP / IP */
   /* On ne considère que la première adresse renvoyée par getaddrinfo */
-  if ((s=socket(resol->ai_family,resol->ai_socktype, resol->ai_protocol)) < 0) {
+  if ((sock=socket(resol->ai_family,resol->ai_socktype, resol->ai_protocol)) < 0) {
     perror("allocation de socket");
     exit(3);
   }
@@ -147,44 +141,21 @@ int ext-in(char * hote)
   /* Connexion */
   fprintf(stderr,"Essai de connexion à %s (%s) sur le port %s\n\n",
 	  hote,ip,port);
-  if (connect(s,resol->ai_addr,sizeof(struct sockaddr_in))<0) {
+  if (connect(sock,resol->ai_addr,sizeof(struct sockaddr_in))<0) {
     perror("connexion");
     exit(4);
   }
   freeaddrinfo(resol); /* /!\ Libération mémoire */
 
   /* Session */
-  char tampon[MAXLIGNE + 3]; /* tampons pour les communications */
-  ssize_t lu;
-  int fini = 0;
-  while( 1 ) { 
-    /* Jusqu'à fermeture de la socket (ou de stdin)     */
-    /* recopier à l'écran ce qui est lu dans la socket  */
-    /* recopier dans la socket ce qui est lu dans stdin */
+    /* Lecture du trafic du tunnel */
+    char buffer[BUFFER_SIZE];
+    int rep;
 
-    /* réception des données */
-    lu = recv(s,tampon,MAXLIGNE,0); /* bloquant */
-    if (lu == 0 ) {
-      fprintf(stderr,"Connexion terminée par l'hôte distant\n");
-      break; /* On sort de la boucle infinie */
+    while (rep = read(tunfd, buffer, BUFFER_SIZE) == -1)) {
+      write(sock, buffer, rep);
     }
-    tampon[lu] = '\0';
-    printf("Reçu: %s",tampon);
-    if ( fini == 1 )
-      break;  /* on sort de la boucle infinie*/
-    
-    /* recopier dans la socket ce qui est entré au clavier */    
-    if ( fgets(tampon,MAXLIGNE - 2,stdin) == NULL ){/* entrée standard fermée */
-      fini=1;
-      fprintf(stderr,"Connexion terminée !!\n");
-      fprintf(stderr,"Hôte distant informé...\n");
-      shutdown(s, SHUT_WR); /* terminaison explicite de la socket 
-			     dans le sens client -> serveur */
-      /* On ne sort pas de la boucle tout de suite ... */
-    }else{   /* envoi des données */
-      send(s,tampon,strlen(tampon),0);
-    }
-  } 
+
   /* Destruction de la socket */
   close(s);
 
