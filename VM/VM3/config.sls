@@ -13,7 +13,7 @@ ip route del default:
     - run
 
 ## Configuration de VM3
-eth1: #LAN2
+eth1:
   network.managed:
     - enabled: True
     - type: eth
@@ -21,7 +21,7 @@ eth1: #LAN2
     - ipaddr: 172.16.2.163
     - netmask: 28
 
-eth2: #LAN4
+eth2:
   network.managed:
     - enabled: True
     - type: eth
